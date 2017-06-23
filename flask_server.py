@@ -30,16 +30,20 @@ def check():
         return message_handler(status = 404, info = message)
 
 
-@app.route('/depositories/<int:dep_id>', methods=['GET'])
-def get_chkcode(dep_id):
-    if 'username' in request.args:
+#@app.route('/depositories/update', methods=['GET'])
+#def update_dep():
+
+
+@app.route('/depositories/checkcode', methods=['GET'])
+def get_chkcode():
+    if 'username' in request.args and 'id' in request.args:
         us = User.query.get(request.args['username'])
         if (not us):
             message = 'user does not exist'
             return message_handler(status=404, info=message)
         else:
-            dm.update_chk(dep_id)
-            result = Depository.query.get(dep_id)
+            dm.update_chk(request.args['id'])
+            result = Depository.query.get(request.args['id'])
             chkcode = {
                 'chkcode': result.chkcode
             }
